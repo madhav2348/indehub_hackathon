@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { ArrowLeft, Play, Pause, RotateCcw } from 'lucide-react-native';
 
+
 interface BrushingScreenProps {
   visible: boolean;
   onClose: () => void;

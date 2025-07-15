@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Animated } from 'react-native';
 import { Play, Flame, Lightbulb } from 'lucide-react-native';
+import Rive from 'rive-react-native'
 
 export default function HomeScreen() {
   const [waveAnimation] = useState(new Animated.Value(0));
@@ -43,15 +44,25 @@ export default function HomeScreen() {
         {/* Brushie Mascot */}
         <View style={styles.mascotContainer}>
           <View style={styles.mascotCircle}>
-            <Text style={styles.mascotEmoji}>🦷</Text>
-            <Animated.Text 
+            <Rive   resourceName="mascot"  // Use the file name (no .riv extension)
+        artboardName="Artboard"            // Replace with your artboard name
+        animationName="State Machine 1"           // Replace with your animation name
+        autoplay={true}
+        style={styles.riveStyle}
+
+            />
+
+            
+            {/* <Text style={styles.mascotEmoji}>🦷</Text> */}
+            {/* <Animated.Text 
               style={[
                 styles.waveEmoji,
                 { transform: [{ rotate: waveRotation }] }
               ]}
             >
               👋
-            </Animated.Text>
+            </Animated.Text> */}
+
           </View>
           <Text style={styles.mascotText}>Hi! I'm Brushie!</Text>
           <Text style={styles.mascotSubtext}>Ready to keep your teeth sparkling clean?</Text>
@@ -118,6 +129,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
+  },
+   riveStyle: {
+    width: 300,
+    height: 300,
   },
   scrollContent: {
     padding: 20,
