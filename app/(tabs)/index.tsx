@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Animated } from 'react-native';
 import { Play, Flame, Lightbulb } from 'lucide-react-native';
 import Rive from 'rive-react-native'
+import LottieView from 'lottie-react-native';
+import { useStreak } from '@/hooks/streakLogic';
 
 export default function HomeScreen() {
   const [waveAnimation] = useState(new Animated.Value(0));
-  const [streak, setStreak] = useState(5);
+  // const [streak, setStreak] = useState(5);
+   const { streak } = useStreak();
+
 
   useEffect(() => {
     const animateWave = () => {
@@ -50,36 +54,41 @@ export default function HomeScreen() {
         autoplay={true}
         style={styles.riveStyle}
 
-            /> */}
+            />
 
             
-            {/* <Text style={styles.mascotEmoji}>🦷</Text> */}
-            {/* <Animated.Text 
-              style={[
-                styles.waveEmoji,
-                { transform: [{ rotate: waveRotation }] }
-              ]}
-            >
-              👋
-            </Animated.Text> */}
+           
 
 
           <Text style={styles.mascotText}>Hi! I'm Brushie!</Text>
-          <Text style={styles.mascotSubtext}>Ready to keep your teeth sparkling clean?</Text>
+          <Text style={styles.mascotSubtext}>Ready to keep your teeth sparkling clean?</Text>*/}
         </View>
 
        
 
-        {/* Streak Counter */}
-        <View style={styles.streakContainer}>
-          <View style={styles.streakIcon}>
-            <Flame size={24} color="#FF6B35" />
-          </View>
-          <View style={styles.streakTextContainer}>
-            {/* <Text style={styles.streakNumber}>{streak} Day</Text>
-            <Text style={styles.streakLabel}>Streak!</Text> */} // Streak
-          </View>
-        </View>
+
+        <View style={styles.streakLottieWrapper}>
+  <Text style={styles.streakHeading}>Week 1</Text>
+  <View style={styles.starRow}>
+    {[...Array(7)].map((_, index) => (
+      <View key={index} style={styles.starItem}>
+        <LottieView
+          source={
+            index < streak
+              ? require('../../assets/animation/glow_star.json')
+              : require('../../assets/animation/empty_star.json')
+          }
+          autoPlay
+          loop={false}
+          style={styles.starLottie}
+        />
+
+      </View>
+      
+    ))}
+  </View>
+</View>
+      <Text>Debug streak: {streak}</Text>
 
         {/* Tip of the Day */}
         <View style={styles.tipContainer}>
@@ -142,12 +151,7 @@ const styles = StyleSheet.create({
   mascotEmoji: {
     fontSize: 48,
   },
-  waveEmoji: {
-    fontSize: 20,
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
+  
   mascotText: {
     fontSize: 20,
     fontFamily: 'FredokaOne',
@@ -161,64 +165,61 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: 250,
   },
-  startButton: {
-    backgroundColor: '#7ED321',
-    borderRadius: 25,
-    marginBottom: 30,
-    shadowColor: '#7ED321',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  startButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 30,
-  },
-  startButtonText: {
-    fontSize: 20,
-    fontFamily: 'FredokaOne',
-    color: '#FFFFFF',
-    marginLeft: 12,
-  },
-  streakContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  streakIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#FFF3E0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  streakTextContainer: {
-    flex: 1,
-  },
-  streakNumber: {
-    fontSize: 24,
-    fontFamily: 'FredokaOne',
-    color: '#FF6B35',
-  },
-  streakLabel: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
-    color: '#7F8C8D',
-  },
+  // startButton: {
+  //   backgroundColor: '#7ED321',
+  //   borderRadius: 25,
+  //   marginBottom: 30,
+  //   shadowColor: '#7ED321',
+  //   shadowOffset: { width: 0, height: 4 },
+  //   shadowOpacity: 0.3,
+  //   shadowRadius: 8,
+  //   elevation: 8,
+  // },
+  // startButtonContent: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   paddingVertical: 20,
+  //   paddingHorizontal: 30,
+  // },
+  // startButtonText: {
+  //   fontSize: 20,
+  //   fontFamily: 'FredokaOne',
+  //   color: '#FFFFFF',
+  //   marginLeft: 12,
+  // },
+ streakLottieWrapper: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 16,
+  padding: 20,
+  marginBottom: 20,
+  alignItems: 'center',
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 4,
+},
+streakHeading: {
+  fontSize: 20,
+  fontFamily: 'FredokaOne',
+  color: '#2C3E50',
+  marginBottom: 16,
+},
+starRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
+starItem: {
+  width: 40,
+  height: 40,
+  marginHorizontal: 4,
+},
+starLottie: {
+  width: '100%',
+  height: '100%',
+},
+
   tipContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,

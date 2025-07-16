@@ -1,77 +1,62 @@
+import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { differenceInCalendarDays, parseISO } from 'date-fns';
 
-const STREAK_KEY = 'strict_weekly_streak';
+export function useStreak() {
+  const [streak, setStreak] = useState(0);
+  const [completedWeeks, setCompletedWeeks] = useState<number[]>([]);
+  const [lastStreakDate, setLastStreakDate] = useState<string | null>(null);
 
-export interface CompletedWeek {
-  startDate: string;
+  useEffect(() => {
+    loadStreakData();
+  }, []);
+
+  const loadStreakData = async () => {
+    try {
+      const today = new Date().toDateString();
+      const storedDate = await AsyncStorage.getItem('lastStreakDate');
+      const storedStreak = parseInt(await AsyncStorage.getItem('streak') || '0');
+      const storedWeeks = JSON.parse(await AsyncStorage.getItem('completedWeeks') || '[]');
+
+      setLastStreakDate(storedDate);
+      setCompletedWeeks(storedWeeks);
+
+      if (storedDate === today) {
+        setStreak(storedStreak);
+        return;
+      }
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      if (storedDate === yesterday.toDateString()) {
+        const newStreak = storedStreak + 1;
+
+        if (newStreak >= 7) {
+          const weekNumber = Math.floor(newStreak / 7);
+          const updatedWeeks = [...storedWeeks, weekNumber];
+
+          await AsyncStorage.setItem('completedWeeks', JSON.stringify(updatedWeeks));
+          await AsyncStorage.setItem('streak', '0');
+          setStreak(0);
+          setCompletedWeeks(updatedWeeks);
+        } else {
+          await AsyncStorage.setItem('streak', newStreak.toString());
+          setStreak(newStreak);
+        }
+      } else {
+        await AsyncStorage.setItem('streak', '1');
+        setStreak(1);
+      }
+
+      await AsyncStorage.setItem('lastStreakDate', today);
+    } catch (err) {
+      console.error('Failed to load streak data', err);
+    }
+  };
+
+  return {
+    streak,
+    completedWeeks,
+    lastStreakDate,
+  };
 }
-
-export interface CurrentWeek {
-  startDate: string;
-  lastCheckDate: string;
-  streak: number;
-}
-
-export interface StreakData {
-  currentWeek: CurrentWeek | null;
-  completedWeeks: CompletedWeek[];
-}
-
-export const checkInToday = async (): Promise<StreakData> => {
-  const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
-
-  const dataRaw = await AsyncStorage.getItem(STREAK_KEY);
-  const data: StreakData = dataRaw
-    ? JSON.parse(dataRaw)
-    : { currentWeek: null, completedWeeks: [] };
-
-  if (!data.currentWeek) {
-    // Start new streak
-    data.currentWeek = {
-      startDate: todayStr,
-      lastCheckDate: todayStr,
-      streak: 1
-    };
-    await AsyncStorage.setItem(STREAK_KEY, JSON.stringify(data));
-    return data;
-  }
-
-  const lastDate = parseISO(data.currentWeek.lastCheckDate);
-  const diff = differenceInCalendarDays(today, lastDate);
-
-  if (diff === 0) {
-    // Already checked in today
-    return data;
-  }
-
-  if (diff > 1) {
-    // Streak broken, reset without saving
-    data.currentWeek = null;
-    await AsyncStorage.setItem(STREAK_KEY, JSON.stringify(data));
-    return data;
-  }
-
-  // Continue streak
-  data.currentWeek.streak += 1;
-  data.currentWeek.lastCheckDate = todayStr;
-
-  if (data.currentWeek.streak === 7) {
-    // Full week completed
-    data.completedWeeks.push({
-      startDate: data.currentWeek.startDate
-    });
-    data.currentWeek = null;
-  }
-
-  await AsyncStorage.setItem(STREAK_KEY, JSON.stringify(data));
-  return data;
-};
-
-export const getStreakStatus = async (): Promise<StreakData> => {
-  const raw = await AsyncStorage.getItem(STREAK_KEY);
-  return raw
-    ? JSON.parse(raw)
-    : { currentWeek: null, completedWeeks: [] };
-};

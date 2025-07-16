@@ -10,32 +10,11 @@ import {
 } from 'react-native';
 import { User } from 'lucide-react-native';
 import LottieView from 'lottie-react-native';
+import { useStreak } from '@/hooks/streakLogic';
 
 export default function SettingsScreen() {
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
-  const languages = ['English', 'Hindi', 'Kannada'];
-  const renderLanguageOption = (language: string) => (
-    <TouchableOpacity
-      key={language}
-      style={[
-        styles.languageOption,
-        selectedLanguage === language && styles.languageOptionSelected,
-      ]}
-      onPress={() => setSelectedLanguage(language)}
-    >
-      <Text
-        style={[
-          styles.languageText,
-          selectedLanguage === language && styles.languageTextSelected,
-        ]}
-      >
-        {language}
-      </Text>
-      {selectedLanguage === language && (
-        <View style={styles.selectedIndicator} />
-      )}
-    </TouchableOpacity>
-  );
+  const { completedWeeks } = useStreak();
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -60,30 +39,28 @@ export default function SettingsScreen() {
         </View>
 
         <View style={styles.section}>
-          <View >
-            <LottieView style={styles.lottieSection}
-              // ref={animationRef}
-              source={require('../../assets/animation/glow_star.json')}
-              autoPlay={true}
-              loop={true}
-            />
-            <View>
-              
-              <Text>Week 1</Text>
+  <View style={styles.section}>
+      <View style={styles.rowContainer}>
+        {completedWeeks.length === 0 ? (
+          <Text style={styles.noStreakText}>No completed weeks yet.</Text>
+        ) : (
+          completedWeeks.map((week, index) => (
+            <View key={index} style={styles.streakItem}>
+              <LottieView
+                style={styles.lottieSection}
+                source={require('../../assets/animation/glow_star.json')}
+                autoPlay
+                loop
+              />
+              <Text style={styles.completedStreak}>Week {week}</Text>
             </View>
-          </View>
-            <View >
-            <LottieView style={styles.lottieSection}
-              // ref={animationRef}
-              source={require('../../assets/animation/glow_star.json')}
-              autoPlay={true}
-              loop={true}
-            />
-              <Text>Week 1</Text>
-            <View>
-              
-            </View>
-          </View>
+          ))
+        )}
+      </View>
+    </View>
+
+
+            
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -161,55 +138,41 @@ const styles = StyleSheet.create({
   avatarEmoji: {
     fontSize: 28,
   },
-  profileTextContainer: {
-    flex: 1,
-  },
-  profileName: {
-    fontSize: 18,
-    fontFamily: 'FredokaOne',
-    color: '#2C3E50',
-    marginBottom: 4,
-  },
-  profileDetail: {
-    fontSize: 14,
-    fontFamily: 'Inter-Regular',
-    color: '#7F8C8D',
-  },
-  languageContainer: {
-    gap: 12,
-  },
-  languageOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    backgroundColor: '#F8F9FA',
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
-  languageOptionSelected: {
-    backgroundColor: '#E8F4FD',
-    borderColor: '#4A90E2',
-  },
-  languageText: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
-    color: '#2C3E50',
-  },
-  languageTextSelected: {
-    color: '#4A90E2',
-  },
-  selectedIndicator: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#4A90E2',
-  },
+ 
 
-  lottieSection: {
-    width: 5,
-    height: 5,
-  },
+
+  completedStreak:{
+    fontFamily: 'FredokaOne',
+    color: '#FF6B35',
+fontSize:16
+
+  }
+, 
+centeredContent: {
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+
+rowContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+
+streakItem: {
+  alignItems: 'center',
+  flex: 1,
+},
+
+lottieSection: {
+  width: 60,
+  height: 60,
+  marginBottom: 6,
+},
+noStreakText: {
+  fontSize: 16,
+  color: '#888',
+  fontStyle: 'italic',
+},
+
 });
