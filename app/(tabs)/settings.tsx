@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Switch } from 'react-native';
-import { User, Globe, Bell, Volume2, Palette, Info, CircleHelp as HelpCircle, Heart } from 'lucide-react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  Switch,
+} from 'react-native';
+import { User } from 'lucide-react-native';
+import LottieView from 'lottie-react-native';
 
 export default function SettingsScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
@@ -10,14 +19,16 @@ export default function SettingsScreen() {
       key={language}
       style={[
         styles.languageOption,
-        selectedLanguage === language && styles.languageOptionSelected
+        selectedLanguage === language && styles.languageOptionSelected,
       ]}
       onPress={() => setSelectedLanguage(language)}
     >
-      <Text style={[
-        styles.languageText,
-        selectedLanguage === language && styles.languageTextSelected
-      ]}>
+      <Text
+        style={[
+          styles.languageText,
+          selectedLanguage === language && styles.languageTextSelected,
+        ]}
+      >
         {language}
       </Text>
       {selectedLanguage === language && (
@@ -29,57 +40,49 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-     
         <View style={styles.header}>
           <Text style={styles.title}>Settings</Text>
-          <Text style={styles.subtitle}>
-            Customize your Brushie experience
-          </Text>
+          <Text style={styles.subtitle}>Customize your Brushie experience</Text>
         </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <User size={24} color="#4A90E2" />
             <Text style={styles.sectionTitle}>Profile</Text>
-          </View>         
-         <TouchableOpacity style={styles.settingItem}>
+          </View>
+          <TouchableOpacity style={styles.settingItem}>
             <View style={styles.profileInfo}>
               <View style={styles.avatarContainer}>
                 <Text style={styles.avatarEmoji}>👧</Text>
-              </View>              
+              </View>
             </View>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Globe size={24} color="#4A90E2" />
-            <Text style={styles.sectionTitle}>Language</Text>
+          <View >
+            <LottieView style={styles.lottieSection}
+              // ref={animationRef}
+              source={require('../../assets/animation/glow_star.json')}
+              autoPlay={true}
+              loop={true}
+            />
+            <View>
+              
+              <Text>Week 1</Text>
+            </View>
           </View>
-          
-          <View style={styles.languageContainer}>
-            {languages.map(renderLanguageOption)}
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Bell size={24} color="#4A90E2" />
-            <Text style={styles.sectionTitle}>Notifications</Text>
-          </View>     
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Volume2 size={24} color="#4A90E2" />
-            <Text style={styles.sectionTitle}>Sound & Effects</Text>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Palette size={24} color="#4A90E2" />
-            <Text style={styles.sectionTitle}>Appearance</Text>
+            <View >
+            <LottieView style={styles.lottieSection}
+              // ref={animationRef}
+              source={require('../../assets/animation/glow_star.json')}
+              autoPlay={true}
+              loop={true}
+            />
+              <Text>Week 1</Text>
+            <View>
+              
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -204,53 +207,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#4A90E2',
   },
-  settingInfo: {
-    flex: 1,
-    marginLeft: 16,
-  },
-  settingLabel: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
-    color: '#2C3E50',
-    marginBottom: 4,
-  },
-  settingDescription: {
-    fontSize: 14,
-    fontFamily: 'Inter-Regular',
-    color: '#7F8C8D',
-  },
-  settingValue: {
-    fontSize: 14,
-    fontFamily: 'Inter-SemiBold',
-    color: '#4A90E2',
-  },
-  encouragementContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 30,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  encouragementEmoji: {
-    fontSize: 48,
-    marginBottom: 16,
-  },
-  encouragementTitle: {
-    fontSize: 20,
-    fontFamily: 'FredokaOne',
-    color: '#4A90E2',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  encouragementText: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: '#2C3E50',
-    textAlign: 'center',
-    lineHeight: 24,
+
+  lottieSection: {
+    width: 5,
+    height: 5,
   },
 });

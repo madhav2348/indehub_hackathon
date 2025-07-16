@@ -43,14 +43,14 @@ export default function HomeScreen() {
 
         {/* Brushie Mascot */}
         <View style={styles.mascotContainer}>
-          <View style={styles.mascotCircle}>
-            <Rive   resourceName="mascot"  // Use the file name (no .riv extension)
-        artboardName="Artboard"            // Replace with your artboard name
-        animationName="State Machine 1"           // Replace with your animation name
+        
+            {/* <Rive   resourceName="mascot" 
+        artboardName="Artboard"          
+        animationName="State Machine 1"           
         autoplay={true}
         style={styles.riveStyle}
 
-            />
+            /> */}
 
             
             {/* <Text style={styles.mascotEmoji}>🦷</Text> */}
@@ -63,18 +63,12 @@ export default function HomeScreen() {
               👋
             </Animated.Text> */}
 
-          </View>
+
           <Text style={styles.mascotText}>Hi! I'm Brushie!</Text>
           <Text style={styles.mascotSubtext}>Ready to keep your teeth sparkling clean?</Text>
         </View>
 
-        {/* Start Brushing Button */}
-        <TouchableOpacity style={styles.startButton}>
-          <View style={styles.startButtonContent}>
-            <Play size={32} color="#FFFFFF" fill="#FFFFFF" />
-            <Text style={styles.startButtonText}>Start Brushing</Text>
-          </View>
-        </TouchableOpacity>
+       
 
         {/* Streak Counter */}
         <View style={styles.streakContainer}>
@@ -82,8 +76,8 @@ export default function HomeScreen() {
             <Flame size={24} color="#FF6B35" />
           </View>
           <View style={styles.streakTextContainer}>
-            <Text style={styles.streakNumber}>{streak} Day</Text>
-            <Text style={styles.streakLabel}>Streak!</Text>
+            {/* <Text style={styles.streakNumber}>{streak} Day</Text>
+            <Text style={styles.streakLabel}>Streak!</Text> */} // Streak
           </View>
         </View>
 
@@ -98,28 +92,7 @@ export default function HomeScreen() {
           </Text>
         </View>
 
-        {/* Quick Actions */}
-        <View style={styles.quickActions}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.actionGrid}>
-            <TouchableOpacity style={styles.actionButton}>
-              <Text style={styles.actionEmoji}>🛁</Text>
-              <Text style={styles.actionText}>Bath Time</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
-              <Text style={styles.actionEmoji}>🥗</Text>
-              <Text style={styles.actionText}>Healthy Meal</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
-              <Text style={styles.actionEmoji}>💤</Text>
-              <Text style={styles.actionText}>Good Sleep</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
-              <Text style={styles.actionEmoji}>🏃</Text>
-              <Text style={styles.actionText}>Exercise</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+       
       </ScrollView>
     </SafeAreaView>
   );
