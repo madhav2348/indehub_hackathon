@@ -48,7 +48,7 @@ export default function HomeScreen() {
         {/* Brushie Mascot */}
         <View style={styles.mascotContainer}>
         
-            {/* <Rive   resourceName="mascot" 
+            <Rive   resourceName="mascot" 
         artboardName="Artboard"          
         animationName="State Machine 1"           
         autoplay={true}
@@ -61,7 +61,7 @@ export default function HomeScreen() {
 
 
           <Text style={styles.mascotText}>Hi! I'm Brushie!</Text>
-          <Text style={styles.mascotSubtext}>Ready to keep your teeth sparkling clean?</Text>*/}
+          <Text style={styles.mascotSubtext}>Ready to keep your teeth sparkling clean?</Text>
         </View>
 
        
