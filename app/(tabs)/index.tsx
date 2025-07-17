@@ -4,38 +4,31 @@ import { Play, Flame, Lightbulb } from 'lucide-react-native';
 import Rive from 'rive-react-native'
 import LottieView from 'lottie-react-native';
 import { useStreak } from '@/hooks/streakLogic';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen() {
-  const [waveAnimation] = useState(new Animated.Value(0));
+  const [showDialog, setShowDialog] = useState(true);
   // const [streak, setStreak] = useState(5);
    const { streak } = useStreak();
 
+ useEffect(() => {
+    const checkWelcomeDialog = async () => {
+      try {
+        const lastShown = await AsyncStorage.getItem('lastWelcomeDate');
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
-  useEffect(() => {
-    const animateWave = () => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(waveAnimation, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(waveAnimation, {
-            toValue: 0,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-        ])
-      ).start();
+        if (lastShown !== today) {
+          setShowDialog(true);
+          await AsyncStorage.setItem('lastWelcomeDate', today);
+        }
+      } catch (error) {
+        console.error('Error checking welcome dialog:', error);
+      }
     };
-    
-    animateWave();
+
+    checkWelcomeDialog();
   }, []);
 
-  const waveRotation = waveAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '15deg'],
-  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,6 +37,7 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <Text style={styles.greeting}>Hello, Superstar! 🌟</Text>
         </View>
+           <WelcomeDialog visible={showDialog} onDismiss={() => setShowDialog(false)} />
 
         {/* Brushie Mascot */}
         <View style={styles.mascotContainer}>
