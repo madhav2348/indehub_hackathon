@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Home, Activity, Gamepad2, Award, Settings } from 'lucide-react-native';
+import { Home, Settings } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (

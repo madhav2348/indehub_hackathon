@@ -5,10 +5,10 @@ import Rive from 'rive-react-native'
 import LottieView from 'lottie-react-native';
 import { useStreak } from '@/hooks/streakLogic';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import WelcomeDialog from '@/components/splash';
 
 export default function HomeScreen() {
   const [showDialog, setShowDialog] = useState(true);
-  // const [streak, setStreak] = useState(5);
    const { streak } = useStreak();
 
  useEffect(() => {

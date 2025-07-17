@@ -22,7 +22,7 @@ const WelcomeDialog: React.FC<WelcomeDialogProps> = ({ visible, onDismiss, durat
       <View style={styles.modalContainer}>
         <View style={styles.dialogBox}>
           <LottieView
-            source={require('../assets/lottie/star.json')}
+            source={require('../assets/animation/dialy_star.json')}
             autoPlay
             loop={false}
             style={styles.lottie}
