@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Animated } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  Animated,
+} from 'react-native';
 import { Play, Flame, Lightbulb } from 'lucide-react-native';
-import Rive from 'rive-react-native'
+import Rive, { RiveRef } from 'rive-react-native';
 import LottieView from 'lottie-react-native';
 import { useStreak } from '@/hooks/streakLogic';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,9 +17,10 @@ import WelcomeDialog from '@/components/splash';
 
 export default function HomeScreen() {
   const [showDialog, setShowDialog] = useState(true);
-   const { streak } = useStreak();
+  const { streak } = useStreak();
+  const riveRef = useRef<RiveRef>(null);
 
- useEffect(() => {
+  useEffect(() => {
     const checkWelcomeDialog = async () => {
       try {
         const lastShown = await AsyncStorage.getItem('lastWelcomeDate');
@@ -29,73 +38,60 @@ export default function HomeScreen() {
     checkWelcomeDialog();
   }, []);
 
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.greeting}>Hello, Superstar! 🌟</Text>
         </View>
-           <WelcomeDialog visible={showDialog} onDismiss={() => setShowDialog(false)} />
+        <WelcomeDialog visible={showDialog} onDismiss={() => setShowDialog(false)} />
 
         {/* Brushie Mascot */}
         <View style={styles.mascotContainer}>
-        
-            <Rive   resourceName="mascot" 
-        artboardName="Artboard"          
-        animationName="State Machine 1"           
-        autoplay={true}
-        style={styles.riveStyle}
-
-            />
-
-            
-           
-
+          <Rive
+            url='https://public.rive.app/community/runtime-files/22043-41336-brushie-mascot.riv
+'
+            artboardName="Artboard"
+            stateMachineName="State Machine 1"
+            autoplay={true}
+            style={styles.riveStyle}
+          />
 
           <Text style={styles.mascotText}>Hi! I'm Brushie!</Text>
-          <Text style={styles.mascotSubtext}>Ready to keep your teeth sparkling clean?</Text>
+          <Text style={styles.mascotSubtext}>
+            Ready to keep your teeth sparkling clean?
+          </Text>
         </View>
 
-       
-
-
         <View style={styles.streakLottieWrapper}>
-  <Text style={styles.streakHeading}>Week 1</Text>
-  <View style={styles.starRow}>
-    {[...Array(7)].map((_, index) => (
-      <View key={index} style={styles.starItem}>
-        <LottieView
-          source={
-            index < streak
-              ? require('../../assets/animation/glow_star.json')
-              : require('../../assets/animation/empty_star.json')
-          }
-          autoPlay
-          loop={false}
-          style={styles.starLottie}
-        />
-
-      </View>
-      
-    ))}
-  </View>
-</View>
-      <Text>Debug streak: {streak}</Text>
-
-        {/* Tip of the Day */}
+          <Text style={styles.streakHeading}>Week 1</Text>
+          <View style={styles.starRow}>
+            {[...Array(7)].map((_, index) => (
+              <View key={index} style={styles.starItem}>
+                <LottieView
+                  source={
+                    index < streak
+                      ? require('../../assets/animation/glow_star.json')
+                      : require('../../assets/animation/empty_star.json')
+                  }
+                  autoPlay={true}
+                  loop={true}
+                  style={styles.starLottie} 
+                />
+              </View>
+            ))}
+          </View>
+        </View>
         <View style={styles.tipContainer}>
           <View style={styles.tipHeader}>
             <Lightbulb size={20} color="#F5A623" />
             <Text style={styles.tipTitle}>Tip of the Day</Text>
           </View>
           <Text style={styles.tipText}>
-            Brush for 2 minutes! Cover the front, back, and top of your teeth for a super clean smile! ✨
+            Brush for 2 minutes! Cover the front, back, and top of your teeth
+            for a super clean smile! ✨
           </Text>
         </View>
-
-       
       </ScrollView>
     </SafeAreaView>
   );
@@ -106,9 +102,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
-   riveStyle: {
-    width: 300,
-    height: 300,
+  riveStyle: {
+     width: '100%',
+    height: '100%',
   },
   scrollContent: {
     padding: 20,
@@ -127,25 +123,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 40,
   },
-  mascotCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#4A90E2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-    shadowColor: '#4A90E2',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-    position: 'relative',
-  },
-  mascotEmoji: {
-    fontSize: 48,
-  },
-  
+
+
+
   mascotText: {
     fontSize: 20,
     fontFamily: 'FredokaOne',
@@ -182,37 +162,37 @@ const styles = StyleSheet.create({
   //   color: '#FFFFFF',
   //   marginLeft: 12,
   // },
- streakLottieWrapper: {
-  backgroundColor: '#FFFFFF',
-  borderRadius: 16,
-  padding: 20,
-  marginBottom: 20,
-  alignItems: 'center',
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.1,
-  shadowRadius: 4,
-  elevation: 4,
-},
-streakHeading: {
-  fontSize: 20,
-  fontFamily: 'FredokaOne',
-  color: '#2C3E50',
-  marginBottom: 16,
-},
-starRow: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-},
-starItem: {
-  width: 40,
-  height: 40,
-  marginHorizontal: 4,
-},
-starLottie: {
-  width: '100%',
-  height: '100%',
-},
+  streakLottieWrapper: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  streakHeading: {
+    fontSize: 20,
+    fontFamily: 'FredokaOne',
+    color: '#2C3E50',
+    marginBottom: 16,
+  },
+  starRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  starItem: {
+    width: 40,
+    height: 40,
+    marginHorizontal: 4,
+  },
+  starLottie: {
+    width: '100%',
+    height: '100%',
+  },
 
   tipContainer: {
     backgroundColor: '#FFFFFF',

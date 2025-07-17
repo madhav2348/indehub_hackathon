@@ -1,5 +1,4 @@
-// components/WelcomeDialog.tsx
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Modal, View, Text, StyleSheet, Dimensions } from 'react-native';
 import LottieView from 'lottie-react-native';
 
@@ -23,7 +22,7 @@ const WelcomeDialog: React.FC<WelcomeDialogProps> = ({ visible, onDismiss, durat
         <View style={styles.dialogBox}>
           <LottieView
             source={require('../assets/animation/dialy_star.json')}
-            autoPlay
+            autoPlay={true}
             loop={false}
             style={styles.lottie}
           />
@@ -34,7 +33,6 @@ const WelcomeDialog: React.FC<WelcomeDialogProps> = ({ visible, onDismiss, durat
   );
 };
 
-const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -44,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dialogBox: {
-    width: width * 0.7,
+    width: '100%',
     backgroundColor: '#fff',
     borderRadius: 20,
     padding: 20,
